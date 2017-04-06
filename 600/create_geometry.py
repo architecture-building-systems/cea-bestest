@@ -39,17 +39,18 @@ with fiona.open(locator.get_building_geometry(), 'w', driver='ESRI Shapefile', c
         'crs': {'lat_0': 39.76, 'lon_0': -104.86}
     })
 
-
-# start creating a DEM
-schema_dem = {
-    'geometry': 'Polygon',
-    'properties': {'Z': 'float'},                   
-}
-with fiona.open(locator.get_building_geometry() + 'DEM.shp', 'w', driver='ESRI Shapefile', crs=crs, schema=schema_dem) as shp:
-    shp.write({
+# Write the district.shp shapefile
+with fiona.open(locator.get_district(), 'w', driver='ESRI Shapefile', crs=crs, schema=schema) as c:
+    # set latitude and longitude: latitude = 39.76, longitude = -104.86
+    c.write({
         'geometry': mapping(poly),
-        'properties': {'Z': 1609},
-        })
+        'properties': {'Name': 'B600',
+                       'floors_bg': 0,
+                       'floors_ag': 1,
+                       'height_bg': 0.0,
+                       'height_ag': 2.7},
+        'crs': {'lat_0': 39.76, 'lon_0': -104.86}
+    })
 
 
 # write the occupancy.dbf file
